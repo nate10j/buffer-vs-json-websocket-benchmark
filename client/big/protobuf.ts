@@ -11,10 +11,10 @@ ws.binaryType = "arraybuffer";
 
 const data = {text: "Hello World! Lorem ipsum dolor sit amet, consectetur adipiscing.", num: 12345}
 
-let startEncodeTime: number = 0;
-let totalEncodeTime: number = 0;
-let startDecodeTime: number = 0;
-let totalDecodeTime: number = 0;
+let startSerializeTime: number = 0;
+let totalSerializeTime: number = 0;
+let startDeserializeTime: number = 0;
+let totalDeserializeTime: number = 0;
 
 protobuf.load("client/testmessage.proto", function (err, root) {
 	if (err)
@@ -24,35 +24,32 @@ protobuf.load("client/testmessage.proto", function (err, root) {
 
 	const TestMessage = root.lookupType("TestMessage")
 
-	const message = TestMessage.create(data);
-	const buffer = TestMessage.encode(message).finish();
-	console.log(buffer.byteLength);
-
 	ws.on("open", () => {
 		startTime = performance.now();
 		for (let i = 0; i < numberOfMessages; i++) {
-			startEncodeTime = performance.now();
+			startSerializeTime = performance.now();
 			const message = TestMessage.create(data);
 			const buffer = TestMessage.encode(message).finish();
 			ws.send(buffer);
-			totalEncodeTime += performance.now() - startEncodeTime;
+			totalSerializeTime += performance.now() - startSerializeTime;
 		}
-		console.log(`Encode time: ${Math.round(totalEncodeTime)} ms`)
 	});
 
 	ws.on("message", (msg: any) => {
 		messagesRecieved++;
 
-		startDecodeTime = performance.now();
+		startDeserializeTime = performance.now();
 		const buffer: Uint8Array = new Uint8Array(msg);
 		const message: any = TestMessage.decode(buffer);
-		totalDecodeTime += performance.now() - startDecodeTime;
+		totalDeserializeTime += performance.now() - startDeserializeTime;
 
 		if (messagesRecieved >= numberOfMessages) {
 			endTime = performance.now();
-			console.log(`decode time: ${Math.round(totalDecodeTime)} ms`)
-			console.log(`${message.text} ${message.num}`);
-			console.log(`${Math.round(endTime - startTime)} ms`);
+			console.log(`Serialize time: ${Math.round(totalSerializeTime * 10) / 10} ms`)
+			console.log(`Deserialize time: ${Math.round(totalDeserializeTime * 10) / 10} ms`)
+			console.log(`Total time: ${Math.round((endTime - startTime) * 10) / 10} ms`);
+			console.log(message);
+			console.log(`${message.byteLength}`);
 
 			ws.close();
 
