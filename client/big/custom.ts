@@ -13,16 +13,18 @@ let totalSerializeTime: number = 0;
 let startDeserializeTime: number = 0;
 let totalDeserializeTime: number = 0;
 
-function binary(text: string, num: number) {
-	const buffer = new ArrayBuffer(1 + text.length);
+function binary(text: string, text2: string, num: number, decimal: number) {
+	const buffer = new ArrayBuffer(2 + 4 + 1 + text.length + text2.length);
 	const view = new DataView(buffer);
 
 	const messageBytes = encoder.encode(text);
 
-	view.setUint8(0, num);
+	view.setUint16(0, num);
+	view.setFloat32(2, decimal);
+	view.setUint8(6, text.length);
 
 	const byteArray = new Uint8Array(buffer);
-	byteArray.set(messageBytes, 1);
+	byteArray.set(messageBytes, 7);
 
 	return buffer;
 
@@ -32,8 +34,9 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		ws.send(binary("Hello World!", 123));
+		const msg = binary("Hello World!", "Lorem ipsum dolor sit amet, consectetur adipiscing.", 12345, 3.1415926);
 		totalSerializeTime += performance.now() - startSerializeTime;
+		ws.send(msg);
 	}
 })
 

@@ -1,12 +1,19 @@
 import Websocket from "ws";
 import { encode, decode } from "@msgpack/msgpack";
 
-type TestMessage = {
+type TestMessage = { // not required but used to make easier for intellisense and typescript stuff
 	text: string,
-	num: number
+	text2: string,
+	num: number,
+	decimal: number
 }
 
-const data: TestMessage = {text: "Hello World! Lorem ipsum dolor sit amet, consectetur adipiscing.", num: 12345}
+const data: TestMessage = {
+	text: "Hello World!",
+	text2: "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+	num: 12345,
+	decimal: 3.1415926
+}
 
 const numberOfMessages: number = 10000;
 let messagesRecieved: number = 0;
@@ -25,8 +32,9 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		ws.send(encode(data));
+		const msg = encode(data);
 		totalSerializeTime += performance.now() - startSerializeTime;
+		ws.send(msg);
 	}
 })
 

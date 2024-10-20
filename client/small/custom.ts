@@ -32,8 +32,9 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		ws.send(binary("Hello World!", 123));
+		const msg = binary("Hello World!", 123);
 		totalSerializeTime += performance.now() - startSerializeTime;
+		ws.send(msg);
 	}
 })
 

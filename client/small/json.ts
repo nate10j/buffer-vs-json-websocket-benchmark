@@ -21,8 +21,9 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		ws.send(JSON.stringify(data));
+		const msg = JSON.stringify(data);
 		totalSerializeTime += performance.now() - startSerializeTime;
+		ws.send(msg);
 	}
 })
 

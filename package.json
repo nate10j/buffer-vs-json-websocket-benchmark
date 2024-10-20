@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@msgpack/msgpack": "^3.0.0-beta2",
+    "binary-vs-json-benchmark-test": ".",
     "i": "^0.3.7",
     "npm": "^10.9.0",
     "protobufjs": "^7.4.0",

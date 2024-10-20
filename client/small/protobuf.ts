@@ -9,7 +9,7 @@ let endTime: number;
 const ws = new Websocket("ws://localhost:3000");
 ws.binaryType = "arraybuffer";
 
-const data = {text: "Hello World! Lorem ipsum dolor sit amet, consectetur adipiscing.", num: 12345}
+const data = {text: "Hello World!", num: 12345}
 
 let startSerializeTime: number = 0;
 let totalSerializeTime: number = 0;
@@ -30,8 +30,8 @@ protobuf.load("client/testmessage.proto", function (err, root) {
 			startSerializeTime = performance.now();
 			const message = TestMessage.create(data);
 			const buffer = TestMessage.encode(message).finish();
-			ws.send(buffer);
 			totalSerializeTime += performance.now() - startSerializeTime;
+			ws.send(buffer);
 		}
 	});
 

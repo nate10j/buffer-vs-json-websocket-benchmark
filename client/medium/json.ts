@@ -14,15 +14,18 @@ let totalDeserializeTime: number = 0;
 
 const data = {
 	text: "Hello World!",
-	num: 123
+	text2: "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+	num: 12345,
+	decimal: 3.1415926
 }
 
 ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		ws.send(JSON.stringify(data));
+		const msg = JSON.stringify(data);
 		totalSerializeTime += performance.now() - startSerializeTime;
+		ws.send(msg);
 	}
 })
 
