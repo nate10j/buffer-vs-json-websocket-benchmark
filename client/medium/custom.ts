@@ -1,5 +1,5 @@
 import Websocket from "ws";
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -50,8 +50,7 @@ ws.on("message", (message: any) => {
 	const textLength = view.getUint8(6);
 	const textBytes = new Uint8Array(buffer, 7, textLength);
 	const text = decoder.decode(textBytes);
-	const text2Length = buffer.byteLength - 7 - textLength;
-	const text2Bytes = new Uint8Array(buffer, 7 + textLength, text2Length);
+	const text2Bytes = new Uint8Array(buffer, 7 + textLength);
 	const text2 = decoder.decode(text2Bytes);
 	totalDeserializeTime += performance.now() - startDeserializeTime;
 

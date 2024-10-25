@@ -15,7 +15,7 @@ const data: TestMessage = {
 	decimal: 3.1415926
 }
 
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;

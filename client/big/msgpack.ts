@@ -3,15 +3,28 @@ import { encode, decode } from "@msgpack/msgpack";
 
 type TestMessage = { // not required but used to make easier for intellisense and typescript stuff
 	text: string,
-	num: number
+	text2: string,
+	text3: string,
+	text4: string,
+	num: number,
+	num2: number,
+	decimal: number,
+	decimal2: number
 }
+// no effect on runtime performance as types are compiled and do not hinder performance during runtime
 
 const data: TestMessage = {
 	text: "Hello World!",
-	num: 123
+	text2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas rutrum odio dolor, a egestas dui bibendum at.",
+	text3: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+	text4: "The quick brown fox jumps over the lazy dog.",
+	num: 123456789,
+	decimal: 3.141592653589793,
+	num2: -123456789,
+	decimal2: -3.141592653589793
 }
 
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;

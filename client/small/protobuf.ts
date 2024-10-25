@@ -1,7 +1,7 @@
 import Websocket from "ws"
 import protobuf from "protobufjs";
 
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -16,7 +16,7 @@ let totalSerializeTime: number = 0;
 let startDeserializeTime: number = 0;
 let totalDeserializeTime: number = 0;
 
-protobuf.load("client/testmessage.proto", function (err, root) {
+protobuf.load("client/small/testmessage.proto", function (err, root) {
 	if (err)
 		throw err;
 

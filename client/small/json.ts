@@ -2,7 +2,7 @@ import WebSocket from "ws";
 
 const ws = new WebSocket("ws://localhost:3000");
 
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -30,15 +30,15 @@ ws.on("open", () => {
 ws.on("message", (msg: string) => {
 	messagesRecieved++;
 	startDeserializeTime = performance.now()
-	const message = JSON.parse(msg);
+	const data = JSON.parse(msg);
 	totalDeserializeTime += performance.now() - startDeserializeTime;
 	if (messagesRecieved >= numberOfMessages) {
 		endTime = performance.now();
 		console.log(`Serialize time: ${Math.round(totalSerializeTime * 10) / 10} ms`)
 		console.log(`Deserialization time: ${Math.round(totalDeserializeTime * 10) / 10} ms`)
 		console.log(`total: ${Math.round((endTime - startTime) * 10) / 10} ms`);
-		console.log(message)
-		console.log(`byte size: ${new Blob([message]).size} bytes`)
+		console.log(data)
+		console.log(`byte size: ${new Blob([msg]).size} bytes`)
 
 		ws.close();
 

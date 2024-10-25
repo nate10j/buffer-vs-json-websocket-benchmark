@@ -11,7 +11,7 @@ const data: TestMessage = {
 	num: 123
 }
 
-const numberOfMessages: number = 10000;
+const numberOfMessages: number = 1000000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;

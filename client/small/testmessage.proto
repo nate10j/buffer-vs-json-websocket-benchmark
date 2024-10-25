@@ -2,5 +2,5 @@ syntax = "proto3";
 
 message TestMessage {
 	string text = 1;
-	int32 num = 2;
+	uint32 num = 2;
 }

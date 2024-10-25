@@ -2,5 +2,11 @@ syntax = "proto3";
 
 message TestMessage {
 	string text = 1;
-	int32 num = 2;
+	string text2 = 2;
+	string text3 = 3;
+	string text4 = 4;
+	uint32 num = 5;
+	sint32 num2 = 6;
+	double decimal = 7;
+	double decimal2 = 8;
 }
