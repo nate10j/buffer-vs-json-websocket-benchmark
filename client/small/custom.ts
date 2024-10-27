@@ -1,5 +1,5 @@
 import Websocket from "ws";
-const numberOfMessages: number = 1000000;
+const numberOfMessages: number = 100000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;

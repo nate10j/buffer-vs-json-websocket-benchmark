@@ -13,7 +13,7 @@ type TestMessage = { // not required but used to make easier for intellisense an
 }
 // no effect on runtime performance as types are compiled and do not hinder performance during runtime
 
-const data: TestMessage = {
+const input: TestMessage = {
 	text: "Hello World!",
 	text2: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas rutrum odio dolor, a egestas dui bibendum at.",
 	text3: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -24,7 +24,7 @@ const data: TestMessage = {
 	decimal2: -3.141592653589793
 }
 
-const numberOfMessages: number = 1000000;
+const numberOfMessages: number = 100000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -41,7 +41,7 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		const msg = encode(data);
+		const msg = encode(input);
 		totalSerializeTime += performance.now() - startSerializeTime;
 		ws.send(msg);
 	}
@@ -53,6 +53,9 @@ ws.on("message", (msg: any) => {
 	startDeserializeTime = performance.now();
 	const message: TestMessage = decode(msg) as TestMessage;
 	totalDeserializeTime += performance.now() - startDeserializeTime;
+
+
+	if (messagesRecieved == 1) console.log(`${msg.byteLength} bytes`);
 
 	if (messagesRecieved >= numberOfMessages) {
 		endTime = performance.now();

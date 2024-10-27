@@ -1,7 +1,7 @@
 import Websocket from "ws"
 import protobuf from "protobufjs";
 
-const numberOfMessages: number = 1000000;
+const numberOfMessages: number = 100000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -9,7 +9,7 @@ let endTime: number;
 const ws = new Websocket("ws://localhost:3000");
 ws.binaryType = "arraybuffer";
 
-const data = {text: "Hello World!", num: 12345}
+const input = {text: "Hello World!", num: 12345}
 
 let startSerializeTime: number = 0;
 let totalSerializeTime: number = 0;
@@ -28,7 +28,7 @@ protobuf.load("client/small/testmessage.proto", function (err, root) {
 		startTime = performance.now();
 		for (let i = 0; i < numberOfMessages; i++) {
 			startSerializeTime = performance.now();
-			const message = TestMessage.create(data);
+			const message = TestMessage.create(input);
 			const buffer = TestMessage.encode(message).finish();
 			totalSerializeTime += performance.now() - startSerializeTime;
 			ws.send(buffer);
@@ -40,7 +40,7 @@ protobuf.load("client/small/testmessage.proto", function (err, root) {
 
 		startDeserializeTime = performance.now();
 		const buffer: Uint8Array = new Uint8Array(msg);
-		const message: any = TestMessage.decode(buffer);
+		const data: any = TestMessage.decode(buffer);
 		totalDeserializeTime += performance.now() - startDeserializeTime;
 
 		if (messagesRecieved >= numberOfMessages) {
@@ -48,8 +48,8 @@ protobuf.load("client/small/testmessage.proto", function (err, root) {
 			console.log(`Serialize time: ${Math.round(totalSerializeTime * 10) / 10} ms`)
 			console.log(`Deserialize time: ${Math.round(totalDeserializeTime * 10) / 10} ms`)
 			console.log(`Total time: ${Math.round((endTime - startTime) * 10) / 10} ms`);
-			console.log(message);
-			console.log(`${message.byteLength}`);
+			console.log(data);
+			console.log(`${msg.byteLength}`);
 
 			ws.close();
 

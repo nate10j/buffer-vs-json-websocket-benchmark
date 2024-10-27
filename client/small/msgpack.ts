@@ -6,12 +6,12 @@ type TestMessage = { // not required but used to make easier for intellisense an
 	num: number
 }
 
-const data: TestMessage = {
+const input: TestMessage = {
 	text: "Hello World!",
 	num: 123
 }
 
-const numberOfMessages: number = 1000000;
+const numberOfMessages: number = 100000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -28,7 +28,7 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		const msg = encode(data);
+		const msg = encode(input);
 		totalSerializeTime += performance.now() - startSerializeTime;
 		ws.send(msg);
 	}
@@ -38,7 +38,7 @@ ws.on("message", (msg: any) => {
 	messagesRecieved++;
 
 	startDeserializeTime = performance.now();
-	const message: TestMessage = decode(msg) as TestMessage;
+	const data: TestMessage = decode(msg) as TestMessage;
 	totalDeserializeTime += performance.now() - startDeserializeTime;
 
 	if (messagesRecieved >= numberOfMessages) {
@@ -46,7 +46,7 @@ ws.on("message", (msg: any) => {
 		console.log(`Serialize time: ${Math.round(totalSerializeTime * 10) / 10} ms`)
 		console.log(`Deserialize time: ${Math.round(totalDeserializeTime * 10) / 10} ms`)
 		console.log(`Total time: ${Math.round((endTime - startTime) * 10) / 10} ms`);
-		console.log(message);
+		console.log(data);
 		console.log(`${msg.byteLength} bytes`);
 
 		ws.close();

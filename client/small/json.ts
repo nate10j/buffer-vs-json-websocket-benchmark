@@ -2,7 +2,7 @@ import WebSocket from "ws";
 
 const ws = new WebSocket("ws://localhost:3000");
 
-const numberOfMessages: number = 1000000;
+const numberOfMessages: number = 100000;
 let messagesRecieved: number = 0;
 let startTime: number;
 let endTime: number;
@@ -12,7 +12,7 @@ let totalSerializeTime: number = 0;
 let startDeserializeTime: number = 0;
 let totalDeserializeTime: number = 0;
 
-const data = {
+const input = {
 	text: "Hello World!",
 	num: 123
 }
@@ -21,7 +21,7 @@ ws.on("open", () => {
 	startTime = performance.now();
 	for (let i = 0; i < numberOfMessages; i++) {
 		startSerializeTime = performance.now();
-		const msg = JSON.stringify(data);
+		const msg = JSON.stringify(input);
 		totalSerializeTime += performance.now() - startSerializeTime;
 		ws.send(msg);
 	}

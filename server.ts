@@ -24,5 +24,6 @@ Bun.serve({
 			console.log(error);
 		},
 		close(ws, code, message) {},
+		perMessageDeflate: false,
 	},
 });
