@@ -14,10 +14,9 @@ let startDeserializeTime: number = 0;
 let totalDeserializeTime: number = 0;
 
 function binary(text: string, text2: string, num: number, decimal: number) {
-	const buffer = new ArrayBuffer(2 + 4 + 1 + text.length + text2.length);
-	const view = new DataView(buffer);
-
 	const messageBytes = encoder.encode(text + text2);
+	const buffer = new ArrayBuffer(2 + 4 + 1 + messageBytes.length);
+	const view = new DataView(buffer);
 
 	view.setUint16(0, num);
 	view.setFloat32(2, decimal);

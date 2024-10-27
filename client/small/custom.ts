@@ -14,10 +14,9 @@ let startDeserializeTime: number = 0;
 let totalDeserializeTime: number = 0;
 
 function binary(text: string, num: number) {
-	const buffer = new ArrayBuffer(1 + text.length);
-	const view = new DataView(buffer);
-
 	const messageBytes = encoder.encode(text);
+	const buffer = new ArrayBuffer(1 + messageBytes.length);
+	const view = new DataView(buffer);
 
 	view.setUint8(0, num);
 
